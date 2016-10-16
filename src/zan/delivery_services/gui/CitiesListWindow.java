@@ -1,24 +1,18 @@
 package zan.delivery_services.gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import zan.delivery_services.City;
-import zan.delivery_services.DeliveryService;
-import zan.delivery_services.gui.DeliveryServicesListWindow.DeliveryServicesTableModel;
 
 public class CitiesListWindow extends JInternalFrame {
 	/**
