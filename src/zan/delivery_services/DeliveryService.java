@@ -1,6 +1,7 @@
 package zan.delivery_services;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
@@ -46,14 +47,14 @@ public class DeliveryService implements DeliveryServiceAPI{
 		this.name = name;
 	}
 	
-	public void insert(){
+	public void insert() throws IOException{
 		SqlSession session = Db.getSession();
 		if (session == null) return;
 		session.insert("deliveryServiceMapper.insertDeliveryService", this);
 		session.commit();
 	}
 
-	public static List<DeliveryService> getAll(){
+	public static List<DeliveryService> getAll() throws IOException{
 		List<DeliveryService> items = Arrays.asList();
 		
 		SqlSession session = Db.getSession();
@@ -157,10 +158,21 @@ public class DeliveryService implements DeliveryServiceAPI{
 			}
 
 		}
-		city.findByRef();
-		//city.setName("");
-		//city.load();
-		city.save();
+		
+		City savedCity = new City();
+		try {
+			savedCity = City.findByRef(city.getRef());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		city.setId(savedCity.getId());
+		try {
+			city.save();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}	
 	
 	@Override

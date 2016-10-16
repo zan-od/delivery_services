@@ -2,6 +2,8 @@ package zan.delivery_services.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -40,7 +42,16 @@ public class CitiesListWindow extends JInternalFrame {
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
 		table = new JTable();
-		table.setModel(new CitiesTableModel(City.getAll()));
+		
+		List<City> cities = Arrays.asList();
+		try {
+			cities = City.getAll();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		table.setModel(new CitiesTableModel(cities));
 		getContentPane().add(table, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane(table);

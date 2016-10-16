@@ -1,5 +1,6 @@
 package zan.delivery_services;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,22 +44,24 @@ public class City {
 		this.service = service;
 	}
 	
-	public void findByRef(){
+	public static City findByRef(String ref) throws IOException{
 		SqlSession session = Db.getSession();
-		if (session == null) return;
-		City found = session.selectOne("cityMapper.findByRef", this);
-		if(found==null){
-			return;
-		}
-		if (found.getId()!=0){
-			setId(found.getId());
-		}
+		City city = session.selectOne("cityMapper.findByRef", ref);
 		session.close();
+		
+		return city;
 	}
 	
-	public void save(){
+	public static City findById(int id) throws IOException{
 		SqlSession session = Db.getSession();
-		if (session == null) return;
+		City city = session.selectOne("cityMapper.findById", id);
+		session.close();
+		
+		return city;
+	}
+	
+	public void save() throws IOException{
+		SqlSession session = Db.getSession();
 		
 		if (isNew()){
 			session.insert("insertCity", this);
@@ -69,25 +72,10 @@ public class City {
 		session.close();
 	}
 
-	public void load(){
-		SqlSession session = Db.getSession();
-		if (session == null) return;
-		
-		if (isNew()) return;
-		
-		City result = session.selectOne("loadCity", this);
-		session.close();
-		
-		setName(result.getName());
-		setRef(result.getRef());
-		setService(result.getService());
-	}
-	
-	public static List<City> getAll(){
+	public static List<City> getAll() throws IOException{
 		List<City> items = Arrays.asList();
 		
 		SqlSession session = Db.getSession();
-		if (session == null) return items;
 		items = session.selectList("cityMapper.selectAll");
 		
 		return items;

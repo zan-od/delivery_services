@@ -1,6 +1,8 @@
 package zan.delivery_services.gui;
 
 import java.awt.EventQueue;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JInternalFrame;
@@ -20,22 +22,6 @@ public class DeliveryServicesListWindow extends JInternalFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DeliveryServicesListWindow frame = new DeliveryServicesListWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -73,7 +59,15 @@ public class DeliveryServicesListWindow extends JInternalFrame {
 //			}
 //		});
 		
-		table.setModel(new DeliveryServicesTableModel(DeliveryService.getAll()));
+		List<DeliveryService> services= Arrays.asList();
+		try {
+			services = DeliveryService.getAll();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		table.setModel(new DeliveryServicesTableModel(services));
 		getContentPane().add(table, BorderLayout.CENTER);
 
 	}

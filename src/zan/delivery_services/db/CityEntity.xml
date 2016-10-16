@@ -9,7 +9,7 @@
 	  select * from cities where ref = #{ref}
 	</select>
 	
-	<select id="loadCity" parameterType="zan.delivery_services.City" resultType="zan.delivery_services.City">  
+	<select id="findById" parameterType="zan.delivery_services.City" resultType="zan.delivery_services.City">  
 	  select * from cities where id = #{id}
 	</select>
 	
