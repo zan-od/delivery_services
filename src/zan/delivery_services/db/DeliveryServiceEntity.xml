@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="deliveryServiceMapper">
+	<resultMap id="deliveryServiceResult" type ="zan.delivery_services.DeliveryService">
+		<result property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="code" column="code" jdbcType="VARCHAR"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+	</resultMap>  
+  
+	<select id="selectCtx" parameterType="int" resultMap="deliveryServiceResult">  
+	  select * from DeliveryServices where ID = #{id}
+	</select>
+  
+	<select id="selectAll" resultMap="deliveryServiceResult">  
+	  select * from delivery_services
+	</select>
+	
+	<insert id="insertDeliveryService">
+	  insert into delivery_services (code,name)
+	  values (#{code},#{name})
+	</insert>
+  
+</mapper>
