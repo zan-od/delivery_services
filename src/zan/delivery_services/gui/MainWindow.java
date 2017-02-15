@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -104,8 +105,14 @@ public class MainWindow{
 		JMenuItem mntmLoadOfficeNewPost = new JMenuItem("Load offices of New Post");
 		mntmLoadOfficeNewPost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DeliveryService service = new DeliveryService();
-				//service.connect();
+				DeliveryService service = null;
+				try {
+					service = DeliveryService.load(1);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} //new DeliveryService();
+				service.connect();
 				
 				progressMonitor = new ProgressMonitor(frame, "Operation in progress...", "", 0, 100);
 				progressMonitor.setProgress(0);

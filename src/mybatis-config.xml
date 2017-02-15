@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
         "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
 <configuration> 
-    <properties resource="config.properties"> <!--ссылка на файл со свойствами(ссылка на СУБД, логин, пароль и тп.)-->
+    <properties resource="database.properties"> <!--ссылка на файл со свойствами(ссылка на СУБД, логин, пароль и тп.)-->
     </properties> 
     <environments default="development"><!--в данном блоке настраиваются подключения к БД-->
         <environment id="development"> 

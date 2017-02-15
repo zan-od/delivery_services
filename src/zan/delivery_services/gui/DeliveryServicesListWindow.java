@@ -104,6 +104,8 @@ public class DeliveryServicesListWindow extends JInternalFrame {
                 return "Код";
             case 1:
                 return "Имя";
+            case 2:
+                return "Ключ";
             }
             return "";
         }
@@ -119,6 +121,8 @@ public class DeliveryServicesListWindow extends JInternalFrame {
                 return bean.getCode();
             case 1:
                 return bean.getName();
+            case 2:
+                return bean.getApiKey();
             }
             return "";
         }

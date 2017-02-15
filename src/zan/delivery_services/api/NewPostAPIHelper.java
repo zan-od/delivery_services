@@ -1,7 +1,5 @@
 package zan.delivery_services.api;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import org.w3c.dom.NodeList;
 import zan.delivery_services.HTTPConnector;
 
 public class NewPostAPIHelper {
-	final String key = "8f221f257b783dfb88392afdf33e722a";
+	private String apiKey;
 	
 	public class WarehouseData{
 		private String ref;
@@ -51,6 +49,14 @@ public class NewPostAPIHelper {
 		}
 	}
 	
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 	public List<WarehouseData> getWarehouses(){
 		List<WarehouseData> warehouses = null;
 		List<CityData> cities = null;
@@ -63,9 +69,9 @@ public class NewPostAPIHelper {
 	        Element root = doc.createElement("file");
 	        doc.appendChild(root);
 	        
-	        Element apiKey = doc.createElement("apiKey");
-	        apiKey.setTextContent(key);
-	        root.appendChild(apiKey);
+	        Element apiKeyEl = doc.createElement("apiKey");
+	        apiKeyEl.setTextContent(getApiKey());
+	        root.appendChild(apiKeyEl);
 	        
 	        Element modelName = doc.createElement("modelName");
 	        modelName.setTextContent("Address");
@@ -127,9 +133,9 @@ public class NewPostAPIHelper {
 	        Element root = doc.createElement("file");
 	        doc.appendChild(root);
 	        
-	        Element apiKey = doc.createElement("apiKey");
-	        apiKey.setTextContent(key);
-	        root.appendChild(apiKey);
+	        Element apiKeyEl = doc.createElement("apiKey");
+	        apiKeyEl.setTextContent(getApiKey());
+	        root.appendChild(apiKeyEl);
 	        
 	        Element modelName = doc.createElement("modelName");
 	        modelName.setTextContent("Address");
@@ -165,7 +171,7 @@ public class NewPostAPIHelper {
 				processWarehouses(responseDoc, cities);
 				
 				//System.out.println(con.getString(con.getBody()));
-				//con.toFile(con.getBody(), "C:\\tmp\\1c_tmp\\1.xml");
+				con.toFile(con.getBody(), "d:\\tmp\\new_post.xml");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

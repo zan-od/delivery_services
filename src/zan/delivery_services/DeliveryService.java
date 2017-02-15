@@ -15,6 +15,7 @@ public class DeliveryService implements DeliveryServiceAPI{
 	private Integer id;
 	private String code;
 	private String name;
+	private String apiKey;
 	
 	private LoadDataWorker worker;
 	private City lastCity;
@@ -36,6 +37,13 @@ public class DeliveryService implements DeliveryServiceAPI{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getApiKey() {
+		return apiKey;
+	}
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
 	}
 	
 	public SwingWorker<?, ?> getWorker() {
@@ -67,8 +75,16 @@ public class DeliveryService implements DeliveryServiceAPI{
 		return items;
 	}
 	
+	public static DeliveryService load(int id) throws IOException{
+		SqlSession session = Db.getSession();
+		if (session == null) return null;
+		
+		return session.selectOne("deliveryServiceMapper.selectCtx", id);
+	}
+	
 	public void connect(){
 		NewPostAPIHelper helper = new NewPostAPIHelper();
+		helper.setApiKey(apiKey);
 		List<NewPostAPIHelper.CityData> cities = helper.getCities();
 		
 		if (cities == null) {
@@ -78,25 +94,26 @@ public class DeliveryService implements DeliveryServiceAPI{
 		int warehousesCount = cities.size();
 		int i = 0;
 		for (CityData cityData : cities) {
-			City savedCity = new City();
+			City city = new City();
 			
 			try {
-				savedCity = City.findByRef(cityData.getRef());
+				city = City.findByRef(cityData.getRef());
+			} catch (IOException e) {
+				city = new City();
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			city.setService(this);
+			
+			try {
+				city.save();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			savedCity.setService(this);
+			System.out.println("Saved city: " + city.getName());
 			
-			try {
-				savedCity.save();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println("Saved city: " + savedCity.getName());
-			
-			lastCity = savedCity;
+			lastCity = city;
 			
 			if (worker!=null) {
 				if (worker.isCancelled()) { break; }
