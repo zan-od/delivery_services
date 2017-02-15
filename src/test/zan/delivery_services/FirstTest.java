@@ -2,13 +2,11 @@ package test.zan.delivery_services;
 
 import static org.junit.Assert.*;
 
-import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import zan.delivery_services.City;
-import zan.delivery_services.db.Db;
 
 public class FirstTest {
 
@@ -40,7 +38,7 @@ public class FirstTest {
 		city.setId(null);
 		assertTrue(city.isNew());
 		
-		city.setId(1);
+		city.setId(1L);
 		assertFalse(city.isNew());		
 	}
 }

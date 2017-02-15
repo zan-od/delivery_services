@@ -4,39 +4,57 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import zan.delivery_services.db.Db;
+import org.hibernate.Session;
 
-public class City {
-	private Integer id;
+import zan.delivery_services.db.ConnectionFactory;
+
+@Entity
+@Table(name = "cities")
+public class City{
+	private Long id;
 	private String name;
 	private String ref;
 	private DeliveryService service;
 	
+	@Transient
 	public boolean isNew(){
 		return (getId() == null);
 	}
 	
-	public Integer getId() {
+	@Id
+	@GeneratedValue
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Column(name = "ref")
 	public String getRef() {
 		return ref;
 	}
 	public void setRef(String ref) {
 		this.ref = ref;
 	}
+	
+	@Transient
+	//@Column(name = "service")
 	public DeliveryService getService() {
 		return service;
 	}
@@ -45,38 +63,29 @@ public class City {
 	}
 	
 	public static City findByRef(String ref) throws IOException{
-		SqlSession session = Db.getSession();
-		City city = session.selectOne("cityMapper.findByRef", ref);
-		session.close();
-		
-		return city;
+		try(Session session = ConnectionFactory.getSession()){
+			return (City) session.createQuery("from City where ref = :ref").setParameter("ref", ref).getSingleResult();
+		}
 	}
 	
 	public static City findById(int id) throws IOException{
-		SqlSession session = Db.getSession();
-		City city = session.selectOne("cityMapper.findById", id);
-		session.close();
-		
-		return city;
+		try(Session session = ConnectionFactory.getSession()){
+			return (City) session.createQuery("from City where id = :id").setParameter("id", id).getSingleResult();
+		}
 	}
 	
 	public void save() throws IOException{
-		SqlSession session = Db.getSession();
-		
-		if (isNew()){
-			session.insert("insertCity", this);
-		} else {
-			session.update("updateCity", this);
+		try(Session session = ConnectionFactory.getSession()){
+			session.save(this);
 		}
-		session.commit();
-		session.close();
 	}
 
 	public static List<City> getAll() throws IOException{
 		List<City> items = Arrays.asList();
 		
-		SqlSession session = Db.getSession();
-		items = session.selectList("cityMapper.selectAll");
+		try(Session session = ConnectionFactory.getSession()){
+			items = (List<City>) session.createQuery("from City").getResultList();
+		}
 		
 		return items;
 	}
