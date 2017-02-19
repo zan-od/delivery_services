@@ -1,30 +1,35 @@
-package zan.delivery_services.gui;
+package zan.delivery_services.desktop.gui;
 
 import java.awt.BorderLayout;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JInternalFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import zan.delivery_services.City;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class CitiesListWindow extends JInternalFrame {
+import zan.delivery_services.delivery_service.bo.DeliveryServiceBo;
+import zan.delivery_services.delivery_service.model.DeliveryService;
+
+public class DeliveryServicesListWindow extends JInternalFrame {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 
+	@Autowired
+	private ApplicationContext applicationContext;
+	
 	/**
 	 * Create the frame.
 	 */
-	public CitiesListWindow() {
+	public DeliveryServicesListWindow() {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -35,31 +40,23 @@ public class CitiesListWindow extends JInternalFrame {
 		JToolBar toolBar = new JToolBar();
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
+		applicationContext = new ClassPathXmlApplicationContext("BeanLocations.xml");
+		DeliveryServiceBo deliveryServicesBo = (DeliveryServiceBo) applicationContext.getBean("deliveryServiceBo");
+		List<DeliveryService> services= deliveryServicesBo.getAllServices();
+		
 		table = new JTable();
-		
-		List<City> cities = Arrays.asList();
-		try {
-			cities = City.getAll();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		table.setModel(new CitiesTableModel(cities));
+		table.setModel(new DeliveryServicesTableModel(services));
 		getContentPane().add(table, BorderLayout.CENTER);
-		
-		JScrollPane scrollPane = new JScrollPane(table);
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 	}
 	
-	public class CitiesTableModel implements TableModel {
+	public class DeliveryServicesTableModel implements TableModel {
 		 
         //private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
  
-        private List<City> beans;
+        private List<DeliveryService> beans;
  
-        public CitiesTableModel(List<City> beans) {
+        public DeliveryServicesTableModel(List<DeliveryService> beans) {
             this.beans = beans;
         }
  
@@ -76,7 +73,7 @@ public class CitiesListWindow extends JInternalFrame {
         }
  
         public int getColumnCount() {
-            return 4;
+            return 3;
         }
  
         public String getColumnName(int columnIndex) {
@@ -84,11 +81,9 @@ public class CitiesListWindow extends JInternalFrame {
             case 0:
                 return "Код";
             case 1:
-                return "Перевозчик";
-            case 2:
                 return "Имя";
-            case 3:
-                return "Ссылка";
+            case 2:
+                return "Ключ";
             }
             return "";
         }
@@ -98,20 +93,14 @@ public class CitiesListWindow extends JInternalFrame {
         }
  
         public Object getValueAt(int rowIndex, int columnIndex) {
-        	City bean = beans.get(rowIndex);
+        	DeliveryService bean = beans.get(rowIndex);
             switch (columnIndex) {
             case 0:
-                return bean.getId();
+                return bean.getCode();
             case 1:
-                /*DeliveryService service = bean.getService();
-                if (service != null)
-                	return service.getName();
-                else*/
-                	return "<none>";
-            case 2:
                 return bean.getName();
-            case 3:
-                return bean.getRef();
+            case 2:
+                return bean.getApiKey();
             }
             return "";
         }
@@ -123,5 +112,7 @@ public class CitiesListWindow extends JInternalFrame {
         public void setValueAt(Object value, int rowIndex, int columnIndex) {
  
         }
-	}
+ 
+    }
+
 }

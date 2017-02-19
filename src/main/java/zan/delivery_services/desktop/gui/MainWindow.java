@@ -1,12 +1,9 @@
-package zan.delivery_services.gui;
+package zan.delivery_services.desktop.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.IOException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -16,8 +13,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ProgressMonitor;
-
-import zan.delivery_services.DeliveryService;
 
 public class MainWindow{
 
@@ -32,7 +27,7 @@ public class MainWindow{
 	 */
 	public static void main(String[] args) {
 		//test();
-		EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					MainWindow window = new MainWindow();
@@ -44,18 +39,18 @@ public class MainWindow{
 		});
 	}
 
-	static void test(){
-		try{
-			System.out.println("start");
-			DeliveryService service = new DeliveryService();
-			service.setCode("INTIME");
-			service.setName("Intime");
-			service.insert();
-			System.out.println("end");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	static void test(){
+//		try{
+//			System.out.println("start");
+//			DeliveryService service = new DeliveryService();
+//			service.setCode("INTIME");
+//			service.setName("Intime");
+//			service.insert();
+//			System.out.println("end");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * Create the application.
@@ -102,38 +97,38 @@ public class MainWindow{
 		JMenu mnLoadOffices = new JMenu("Load offices");
 		menuBar.add(mnLoadOffices);
 		
-		JMenuItem mntmLoadOfficeNewPost = new JMenuItem("Load offices of New Post");
-		mntmLoadOfficeNewPost.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				DeliveryService service = null;
-				try {
-					service = DeliveryService.load(1);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} //new DeliveryService();
-				service.connect();
-				
-				progressMonitor = new ProgressMonitor(frame, "Operation in progress...", "", 0, 100);
-				progressMonitor.setProgress(0);
-
-				operation = new LoadDataWorker(service, progressMonitor);
-				operation.addPropertyChangeListener(new PropertyChangeListener() {
-
-					@Override
-					public void propertyChange(PropertyChangeEvent event) {
-						if (progressMonitor.isCanceled()) {
-							operation.cancel(true);
-						} else if (event.getPropertyName().equals("progress")) {
-							int progress = ((Integer) event.getNewValue()).intValue();
-							progressMonitor.setProgress(progress);
-						}
-					}
-				});
-				operation.execute();
-			}
-		});
-		mnLoadOffices.add(mntmLoadOfficeNewPost);
+//		JMenuItem mntmLoadOfficeNewPost = new JMenuItem("Load offices of New Post");
+//		mntmLoadOfficeNewPost.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				DeliveryService service = null;
+//				try {
+//					service = DeliveryService.load(1);
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} //new DeliveryService();
+//				service.connect();
+//				
+//				progressMonitor = new ProgressMonitor(frame, "Operation in progress...", "", 0, 100);
+//				progressMonitor.setProgress(0);
+//
+//				operation = new LoadDataWorker(service, progressMonitor);
+//				operation.addPropertyChangeListener(new PropertyChangeListener() {
+//
+//					@Override
+//					public void propertyChange(PropertyChangeEvent event) {
+//						if (progressMonitor.isCanceled()) {
+//							operation.cancel(true);
+//						} else if (event.getPropertyName().equals("progress")) {
+//							int progress = ((Integer) event.getNewValue()).intValue();
+//							progressMonitor.setProgress(progress);
+//						}
+//					}
+//				});
+//				operation.execute();
+//			}
+//		});
+//		mnLoadOffices.add(mntmLoadOfficeNewPost);
 		
 		this.frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		

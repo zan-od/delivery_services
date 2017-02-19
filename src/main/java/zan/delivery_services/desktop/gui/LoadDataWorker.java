@@ -1,4 +1,4 @@
-package zan.delivery_services.gui;
+package zan.delivery_services.desktop.gui;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 
-import zan.delivery_services.DeliveryService;
+import zan.delivery_services.delivery_service.model.DeliveryService;
 
 public class LoadDataWorker extends SwingWorker<Void, LoadDataWorker.ProgressData> {
 
@@ -16,7 +16,7 @@ public class LoadDataWorker extends SwingWorker<Void, LoadDataWorker.ProgressDat
 
 	public LoadDataWorker(DeliveryService service, ProgressMonitor progressMonitor) {
 		this.service = service;
-		this.service.setWorker(this);
+		//this.service.setWorker(this);
 
 		this.progressMonitor = progressMonitor;
 	}
@@ -30,7 +30,7 @@ public class LoadDataWorker extends SwingWorker<Void, LoadDataWorker.ProgressDat
 	@Override
 	protected Void doInBackground() throws Exception {
 
-		service.connect();
+		//service.connect();
 
 		/*
 		 * for (int i = 1; i <= 100; i++) { if (isCancelled()) { break; }
