@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Cities list</title>
+</head>
+<body>
+	<table style="border: 1px solid black;">
+		<thead>
+			<tr>
+				<th th:text="${columns.get('id')}"></th>
+				<th th:text="${columns.get('name')}"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="city: ${cities}">
+				<td th:text="${city.getId()}">id</td>
+				<td th:text="${city.getName()}">name</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package zan.delivery_services.city.model;
+package zan.delivery_services.model;
 
 import java.io.Serializable;
 
@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import zan.delivery_services.delivery_service.model.DeliveryService;
 
 @Entity
 @Table(name = "cities")

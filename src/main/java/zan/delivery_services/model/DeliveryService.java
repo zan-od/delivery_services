@@ -1,4 +1,4 @@
-package zan.delivery_services.delivery_service.model;
+package zan.delivery_services.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
